@@ -1,0 +1,10 @@
+{
+   "addressId": "001"
+   "addressType": "ShippingAddress",
+    "line1": "53 Grayson Road",
+    "line2": "",
+    "city": "North Epping",
+    "state": "NSW",
+    "postcode": "2121",
+    "country": "Australia",
+  }

@@ -1,0 +1,454 @@
+#%RAML 1.0
+title: Customers Management API
+version: v1
+baseUri: http://api.rajeshoz.com.au/crm/{version}
+mediaType: application/json
+
+uses:
+  datatype: ./dataTypes/datatype.raml
+      
+types:
+  Customer: datatype.Customer
+  Address: datatype.Address
+  Error: datatype.Error
+    
+traits:
+  pageable: !include traits/pageable.raml
+  sortable: !include traits/sortable.raml
+
+securitySchemes:
+  oauth2_0: !include securitySchema/oAuth2_0.raml
+
+securedBy: oauth2_0 
+      
+/customers:
+  displayName: Customers
+  get:
+    description: Get a list of customers.
+    is: [sortable, pageable]
+    queryParameters:
+      firstName?: 
+        type:  string
+        description: first name
+      lastName?: 
+        type: string
+        description: last name
+      email?: 
+        type:  string
+        description: email
+      phone?:
+       type: string
+       description: phone
+      mobile?:
+       type: string
+       description: mobile
+      
+    responses: 
+      200:
+        body: 
+          application/json:
+            type: Customer[]
+            example: 
+              [
+                {
+                "customerId": "0011",
+                "saluation" : "Mr",
+                "firstName": "Rajesh",
+                "lastName": "Kumar",
+                "email": "rajesh.kumar@example.com",
+                "phone": "(02)98770272",
+                "mobile": "0409763597",
+                "status": "active",
+                "registerationDate": "2012-11-01T22:08:41+00:00",
+                 "links": [
+                      {
+                        "href": "customers/0011/addresses",
+                        "rel": "addresses",
+                      }
+                  ]
+               },
+                {
+                "customerId": "0012",
+                "saluation" : "Mr",
+                "firstName": "Martin",
+                "lastName": "Smith",
+                "email": "martin.smith@example.com",
+                "phone": "(02)98770272",
+                "mobile": "0409763597",
+                "status": "active",
+                "registerationDate": "2012-11-01T22:08:41+00:00",
+                 "links": [
+                      {
+                        "href": "customers/0012/addresses",
+                        "rel": "addresses",
+                      }
+                  ]
+               }
+              ]
+            
+  post:
+      description:  Create a customer
+      body: 
+        application/json:
+          type: Customer
+          example: 
+             {
+                "saluation" : "Mr",
+                "firstName": "Rajesh",
+                "lastName": "Kumar",
+                "email": "rajesh.kumar@example.com",
+                "phone": "(02)98770272",
+                "mobile": "0409763597"
+              }
+      responses: 
+        201:
+          body: 
+            application/json:
+              type: Customer
+              example: 
+                {
+                "customerId": "0011",
+                "saluation" : "Mr",
+                "firstName": "Rajesh",
+                "lastName": "Kumar",
+                "email": "rajesh.kumar@example.com",
+                "phone": "(02)98770272",
+                "mobile": "0409763597",
+                "status": "active",
+                "registerationDate": "2012-11-01T22:08:41+00:00",
+                 "links": [
+                      {
+                        "href": "customers/0011",
+                        "rel": "self",
+                      },
+                      {
+                        "href": "customers/0011/addresses",
+                        "rel": "addresses",
+                      }
+                  ]
+               }
+        400:
+          body: 
+            application/json:
+              type: Error
+              example: {"code" : "400", "message" : "Bad request paramters."}
+              
+            
+               
+  /{customerId}:
+    get:
+      description: Get a Customer
+      responses:
+        200:
+          body:
+            application/json:
+              type: Customer
+              example: 
+                {
+                "customerId": "0011",
+                "saluation" : "Mr",
+                "firstName": "Rajesh",
+                "lastName": "Kumar",
+                "email": "rajesh.kumar@example.com",
+                "phone": "(02)98770272",
+                "mobile": "0409763597",
+                "status": "active",
+                "registerationDate": "2012-11-01T22:08:41+00:00",
+                 "links": [
+                      {
+                        "href": "customers/0011/addresses",
+                        "rel": "addresses",
+                      }
+                  ]
+               }
+              
+        404:
+          body: 
+            application/json:
+              type: Error
+              example: {"code" : "404", "message" : "Resource not found"}
+              
+    put:
+      description:  Update a customer
+      body: 
+        application/json:
+          type: Customer
+          example: 
+            {
+              "saluation" : "Mr",
+              "firstName": "Rajesh",
+              "lastName": "Kumar",
+              "email": "rajesh.kumar@example.com",
+              "phone": "(02)98770272",
+              "mobile": "0409763597",
+              "status": "active",
+            }
+      responses: 
+        200:
+          body: 
+            application/json:
+              type: Customer
+              example:  
+                {
+                  "customerId" : "0011",
+                  "saluation" : "Mr",
+                  "firstName": "Rajesh",
+                  "lastName": "Kumar",
+                  "email": "rajesh.kumar@example.com",
+                  "phone": "(02)98770272",
+                  "mobile": "0409763597",
+                  "status": "active",
+                   "links": [
+                      {
+                        "href": "customers/0011/addresses",
+                        "rel": "addresses",
+                      }
+                    ]
+                 }
+        400:
+          body: 
+            application/json:
+              type: Error
+              example: {"code" : "400", "message" : "Bad request paramters."}
+        404:
+          body: 
+            application/json:
+              type: Error
+              example: {"code" : "404", "message" : "Resource not found."}
+    
+    delete:
+      description: Delete a customer
+      responses: 
+        200:
+             
+   
+  /{customerId}/addresses:
+    get:
+      description: Get a list of customer addreses
+      responses: 
+        200:
+          body: 
+            application/json:
+              type: Address[]
+              example:
+               [ 
+                  {
+                  "addressType": "BillingAddress",
+                  "line1": "53 Grayson Road",
+                  "line2": "",
+                  "city": "North Epping",
+                  "state": "NSW",
+                  "postcode": "2121",
+                  "country": "Australia",
+                  "addressId": "001",
+                 },
+                {
+                  "addressType": "ShippingAddress",
+                   "line1": "53 Grayson Road",
+                  "line2": "",
+                  "city": "North Epping",
+                  "state": "NSW",
+                  "postcode": "2121",
+                  "country": "Australia",
+                  "addressId": "002",
+                  }
+                ]
+
+    post:
+      description: Add an addres
+      body: 
+        application/json:
+          type: Address
+          example:
+             {
+                "addressType": "ShippingAddress",
+                "line1": "53 Grayson Road",
+                 "line2": "",
+                "city": "North Epping",
+                "state": "NSW",
+                "postcode": "2121",
+                "country": "Australia"
+              }
+      responses: 
+        200:
+          body: 
+            application/json:
+              type: Address
+              example:
+               {
+                 "addressType": "ShippingAddress",
+                  "line1": "53 Grayson Road",
+                  "line2": "",
+                  "city": "North Epping",
+                  "state": "NSW",
+                  "postcode": "2121",
+                  "country": "Australia",
+                  "addressId" : "001",
+                   "links": [
+                      {
+                        "href": "customers/0011",
+                        "rel": "customer",
+                      }
+                  ]
+              }
+        400:
+          body: 
+            application/json:
+              type: Error
+              example: {"code" : "400", "message" : "Bad request paramters."}
+              
+          
+    
+      
+    
+/customers/{customerId}/addresses/{addressId}:
+  get:
+    description: Get an address of a customer
+    responses: 
+      200:
+        body: 
+          application/json:
+            type: Address
+            example:
+             {
+                 "addressId" : "001",
+                 "addressType": "ShippingAddress",
+                  "line1": "53 Grayson Road",
+                  "line2": "",
+                  "city": "North Epping",
+                  "state": "NSW",
+                  "postcode": "2121",
+                  "country": "Australia",
+                   "links": [
+                      {
+                        "href": "customers/0011",
+                        "rel": "customer",
+                      }
+                  ]
+              }
+      404:
+        body: 
+          application/json:
+            type: Error
+            example: {"code" : "404", "message" : "Resource not found"}
+            
+  put:
+    description: Update an address of a customer
+    body: 
+      application/json:
+        type: datatype.Address
+        example:
+         {
+            "addressType": "ShippingAddress",
+            "line1": "53 Grayson Road",
+            "line2": "",
+            "city": "North Epping",
+             "state": "NSW",
+             "postcode": "2121",
+            "country": "Australia",
+          }
+    responses: 
+      200:
+        body: 
+          application/json:
+            type: Address
+            example:
+              {
+                "addressId" : "001",
+                "addressType": "ShippingAddress",
+                "line1": "53 Grayson Road",
+                "line2": "",
+                "city": "North Epping",
+                "state": "NSW",
+                "postcode": "2121",
+                "country": "Australia",
+                "links": [
+                  {
+                    "href": "customers/0011",
+                    "rel": "customer",
+                  }
+                ]
+              }
+      400:
+        body: 
+          application/json:
+            type: Error
+            example: {"code" : "400", "message" : "Bad request paramters."}
+      404:
+        body: 
+          application/json:
+            type: Error
+            example: {"code" : "404", "message" : "Resource bot found."}
+          
+  delete:
+    description:  Delete an address of a customer
+    responses: 
+      200:
+       
+/customers/recently_enrolled:
+    get:
+      description: Get customer enrolled recently
+      queryParameters: 
+        lastTime: 
+          type:  integer
+          description: time in minutes
+      responses: 
+        200:
+          body: 
+            application/json:
+              type: Customer[]
+              example:
+               [
+                {
+                  "customerId": "0011",
+                  "saluation" : "Mr",
+                  "firstName": "Rajesh",
+                  "lastName": "Kumar",
+                  "email": "rajesh.kumar@example.com",
+                  "phone": "(02)98770272",
+                  "mobile": "0409763597",
+                  "status": "active",
+                  "registerationDate": "2012-11-01T22:08:41+00:00",
+                   "links": [
+                      {
+                        "href": "customers/0011/addresses",
+                        "rel": "addresses",
+                      }
+                  ]
+                 }
+              ]
+            
+/customers/recently_updated:
+    get:
+      description: Get customers updated recently
+      queryParameters: 
+        lastTime: 
+          type:  number
+          description: time in minutes
+      responses: 
+        200:
+          body: 
+            application/json:
+              type: Customer[]
+              example: 
+               [
+                {
+                  "customerId": "0011",
+                  "saluation" : "Mr",
+                  "firstName": "Rajesh",
+                  "lastName": "Kumar",
+                  "email": "rajesh.kumar@example.com",
+                  "phone": "(02)98770272",
+                  "mobile": "0409763597",
+                  "status": "active",
+                  "registerationDate": "2012-11-01T22:08:41+00:00",
+                 "links": [
+                      {
+                        "href": "customers/0011/addresses",
+                        "rel": "addresses",
+                      }
+                  ]
+                 }
+              ]
+          
+    

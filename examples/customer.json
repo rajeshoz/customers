@@ -1,0 +1,22 @@
+ {
+     "customerid": "0011",
+     "saluation" : "Mr",
+     "firstName": "Rajesh",
+     "lastName": "Kumar",
+     "email": "rajesh.kumar@example.com",
+     "phone": "(02)98770272",
+     "mobile": "0409763597",
+     "status": "active",
+     "registerationDate": "2012-11-01T22:08:41+00:00",
+     "links": [
+          {
+            "href": "customers/0011",
+             "rel": "self",
+           },
+                      
+            {
+              "href": "customer/0011/addresses",
+               "rel": "addresses",
+             }
+           ]
+}

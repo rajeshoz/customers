@@ -1,0 +1,49 @@
+{ 
+  "customers": 
+  [
+    {
+     "customerid": "0011",
+     "saluation" : "Mr",
+     "firstName": "Rajesh",
+     "lastName": "Kumar",
+     "email": "rajesh.kumar@example.com",
+     "phone": "(02)98770272",
+     "mobile": "0409763597",
+     "status": "active",
+     "registerationDate": "2012-11-01T22:08:41+00:00",
+     "links": [
+          {
+            "href": "customers/0011",
+             "rel": "self",
+           },
+                      
+            {
+              "href": "customer/0011/addresses",
+               "rel": "addresses",
+             }
+           ]
+    },
+    {
+     "customerid": "0012",
+     "saluation" : "Mr",
+     "firstName": "Martin",
+     "lastName": "Smith",
+     "email": "martin.smith@example.com",
+     "phone": "(02)98770272",
+     "mobile": "0409763597",
+     "status": "active",
+     "registerationDate": "2012-11-01T22:08:41+00:00",
+     "links": [
+          {
+            "href": "customers/0012",
+             "rel": "self",
+           },
+                      
+            {
+              "href": "customer/0012/addresses",
+               "rel": "addresses",
+             }
+           ]
+    }
+  ]
+}
